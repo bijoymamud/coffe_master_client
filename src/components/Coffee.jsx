@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
 
@@ -20,18 +21,30 @@ const Coffee = ({ coffee }) => {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Swal.fire(
-                //     'Deleted!',
-                //     'Your item has been deleted.',
-                //     'success'
-                // )
-
-
 
                 //aikhne kun id tay click kore delete korbo oita niye asar jonno fetch use korbo
                 //kon method ke click korbo oita ble dte hbe
 
-                fetch(`http://localhost:5000/coffee/${_id}`)
+                fetch(`http://localhost:5000/coffee/${_id}`, {
+                    method: "DELETE",
+                    headers: {
+                        "content-type": "application/json"
+                    },
+                    body: JSON.stringify()
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data);
+                        if (data.deletedCount > 0) {
+                            Swal.fire(
+                                'Deleted!',
+                                'Your item has been deleted.',
+                                'success'
+                            )
+
+
+                        }
+                    })
             }
         })
 
@@ -50,7 +63,9 @@ const Coffee = ({ coffee }) => {
                     <div className="card-actions justify-end">
                         <div className="btn-group btn-group-vertical space-y-5 p-3">
                             <button className="btn btn-active">View</button>
-                            <button className="btn">Edit</button>
+                            <Link to={`/updateCoffee/${_id}`}>
+                                <button className="btn">Edit</button>
+                            </Link>
                             <button
                                 onClick={() => handleDelete(_id)}
                                 className="btn">X</button>
