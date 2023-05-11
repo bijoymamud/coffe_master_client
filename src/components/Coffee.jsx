@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 
 
 const Coffee = ({ coffee }) => {
@@ -9,6 +10,30 @@ const Coffee = ({ coffee }) => {
     const handleDelete = _id => {
         //id dhore delete korte hobe tai event na niye _id niwa hyse
         console.log(_id);
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Swal.fire(
+                //     'Deleted!',
+                //     'Your item has been deleted.',
+                //     'success'
+                // )
+
+
+
+                //aikhne kun id tay click kore delete korbo oita niye asar jonno fetch use korbo
+                //kon method ke click korbo oita ble dte hbe
+
+                fetch(`http://localhost:5000/coffee/${_id}`)
+            }
+        })
 
     }
     return (
