@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { useLoaderData } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
@@ -8,7 +8,7 @@ const UpdateCoffee = () => {
     const { _id, name, quantity, supplier, taste, category, details, photo } = coffee;
 
 
-    const handleSubmit = event => {
+    const handleUpdatedCoffee = event => {
         event.preventDefault();
         const form = event.target;
         const name = form.name.value;
@@ -19,25 +19,25 @@ const UpdateCoffee = () => {
         const details = form.details.value;
         const photo = form.photo.value;
 
-        const newCoffee = { name, quantity, supplier, taste, category, details, photo }
-        console.log(newCoffee);
+        const updatedCoffe = { name, quantity, supplier, taste, category, details, photo };
+        console.log(updatedCoffe);
 
         //server theke req korar por akhn theke pathabo
-        fetch('http://localhost:5000/coffee', {
+        fetch(`http://localhost:5000/coffee/${_id}`, {
             //post e hit korar jonno
-            method: "POST",
+            method: "PUT",
             headers: {
                 "content-type": "application/json"
             },
-            body: JSON.stringify(newCoffee)
+            body: JSON.stringify(updatedCoffe)
         })
             .then(res => res.json())
             .then(data => {
                 console.log(data);
-                if (data.insertedId) {
+                if (data.modifiedCount > 0) {
                     Swal.fire({
                         title: 'Success!',
-                        text: 'Successfully added',
+                        text: 'Successfully Updated',
                         icon: 'success',
                         confirmButtonText: 'Lets go'
                     })
@@ -48,7 +48,7 @@ const UpdateCoffee = () => {
     return (
         <div className='bg-[#F4F3F0] p-24'>
             <h2 className='text-3xl font-extrabold'>Update a Coffee</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleUpdatedCoffee}>
                 {/*Name and quantity*/}
                 <div className='md:flex gap-10 mb-8'>
                     <div className="form-control md:w-1/2">
@@ -113,6 +113,7 @@ const UpdateCoffee = () => {
 
                             <input type="text" placeholder="Category"
                                 name='category'
+                                defaultValue={category}
                                 className="input input-bordered w-full" />
                         </label>
                     </div>
@@ -124,6 +125,7 @@ const UpdateCoffee = () => {
 
                             <input type="text"
                                 name='details'
+                                defaultValue={details}
                                 placeholder="Details" className="input input-bordered w-full" />
                         </label>
                     </div>
@@ -138,6 +140,7 @@ const UpdateCoffee = () => {
 
                             <input type="text" placeholder="Photo URL"
                                 name='photo'
+                                defaultValue={photo}
                                 className="input input-bordered w-full" />
                         </label>
                     </div>
